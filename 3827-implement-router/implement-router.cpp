@@ -1,68 +1,61 @@
 class Router {
 private:
-    int size;
-    unordered_map<long long, vector<int>> packets;
-    unordered_map<int, vector<int>> counts;
-    queue<long long> q;
+    int MAX_SIZE;  // memory limit
+    unordered_map<string, vector<int>> packetStore;  // key -> packet [source, dest, timestamp]
+    unordered_map<int, vector<int>> destTimestamps;  // destination -> sorted timestamps
+    queue<string> que;  // FIFO order
 
-    long long encode(int source, int destination, int timestamp) {
-        return ((long long)source << 40) | ((long long)destination << 20) | timestamp;
-    }
-
-    int lowerBound(vector<int>& list, int target) {
-        return (int)(lower_bound(list.begin(), list.end(), target) - list.begin());
-    }
-
-    int upperBound(vector<int>& list, int target) {
-        return (int)(upper_bound(list.begin(), list.end(), target) - list.begin());
+    string makeKey(int source, int destination, int timestamp) {
+        return to_string(source) + "#" + to_string(destination) + "#" + to_string(timestamp);
     }
 
 public:
     Router(int memoryLimit) {
-        size = memoryLimit;
+        MAX_SIZE = memoryLimit;
     }
 
     bool addPacket(int source, int destination, int timestamp) {
-        long long key = encode(source, destination, timestamp);
+        string key = makeKey(source, destination, timestamp);
 
-        if (packets.find(key) != packets.end())
-            return false;
+        if (packetStore.find(key) != packetStore.end()) {
+            return false;  // duplicate
+        }
 
-        if ((int)packets.size() >= size)
+        if ((int)packetStore.size() >= MAX_SIZE) { //remove the oldest packet
             forwardPacket();
+        }
 
-        packets[key] = {source, destination, timestamp};
-        q.push(key);
-        counts[destination].push_back(timestamp);
+        packetStore[key] = {source, destination, timestamp};
+        que.push(key);
+        destTimestamps[destination].push_back(timestamp);
 
         return true;
     }
 
     vector<int> forwardPacket() {
-        if (packets.empty()) return {};
+        if (packetStore.empty())
+            return {}; //If there are no packets to forward, return an empty array.
 
-        long long key = q.front();
-        q.pop();
+        string key = que.front(); 
+        que.pop();
 
-        vector<int> packet = packets[key];
-        packets.erase(key);
+        vector<int> packet = packetStore[key];
+        packetStore.erase(key);
 
         int dest = packet[1];
-        counts[dest].erase(counts[dest].begin());  // remove earliest timestamp
+        destTimestamps[dest].erase(destTimestamps[dest].begin()); // remove earliest timestamp
 
         return packet;
     }
 
     int getCount(int destination, int startTime, int endTime) {
-        auto it = counts.find(destination);
-        if (it == counts.end() || it->second.empty())
+        auto it = destTimestamps.find(destination);
+        if (it == destTimestamps.end() || it->second.empty())
             return 0;
 
-        vector<int>& list = it->second;
+        int i = lower_bound(begin(it->second), end(it->second), startTime) - begin(it->second);//log(size of vec)
+        int j = upper_bound(begin(it->second), end(it->second), endTime) - begin(it->second); //log(size of vec)
 
-        int left = lowerBound(list, startTime);
-        int right = upperBound(list, endTime);
-
-        return right - left;
+        return j - i;
     }
 };
