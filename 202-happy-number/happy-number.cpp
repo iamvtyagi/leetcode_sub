@@ -19,3 +19,6 @@ int help(int n){
          return slow == 1;
     }
 };
+
+// this is the 1st question i am seeing Floyd’s Cycle Detection algo use in questions which is not 
+//realted to linked list
