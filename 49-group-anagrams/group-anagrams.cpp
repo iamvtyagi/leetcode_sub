@@ -1,5 +1,22 @@
 class Solution {
 public:
+string generate(string& word){
+    int arr[26] = {0};
+    for(auto& ch : word){
+         arr[ch-'a']++;
+    }
+
+    string new_word = "";
+
+    for(int i = 0;i<26;i++){
+         int freq = arr[i];
+
+         if(freq > 0){
+             new_word += string(freq,i+'a');
+         }
+    }
+    return new_word;
+}
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
         int n = strs.size();
         vector<vector<string>> ans;
@@ -7,9 +24,9 @@ public:
         for(int i = 0;i<n;i++){
              string temp = strs[i];
 
-             sort(temp.begin(),temp.end());
+             string new_string = generate(temp);
 
-             mp[temp].push_back(strs[i]);
+             mp[new_string].push_back(temp);
         }
 
         for(auto it : mp){
