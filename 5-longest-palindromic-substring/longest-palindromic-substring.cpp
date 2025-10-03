@@ -7,7 +7,7 @@ public:
          if(t[i][j] != -1) return t[i][j];
 
          if(s[i] == s[j]) { 
-             return solve(s,i+1,j-1);
+             return t[i][j] = solve(s,i+1,j-1);
          }
 
          return t[i][j] =  0;
