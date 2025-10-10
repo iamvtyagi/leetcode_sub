@@ -1,11 +1,18 @@
 class Solution {
 public:
     int findMin(vector<int>& nums) {
-        int n = nums.size();
-        int minValue = INT_MAX;
-        for(int i = 0;i<n;i++){
-             minValue = min(nums[i],minValue);
+        int l = 0, r = nums.size() - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] > nums[r]) {
+                // Minimum lies in right half because right is unsorted
+                l = mid + 1;
+            } else {
+                // Minimum lies in left half (including mid) left unsorted
+                r = mid;
+            }
         }
-        return  minValue;
+        return nums[l];
     }
 };
