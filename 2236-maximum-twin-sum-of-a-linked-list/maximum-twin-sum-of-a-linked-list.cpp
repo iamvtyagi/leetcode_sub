@@ -1,20 +1,22 @@
 class Solution {
 public:
     int pairSum(ListNode* head) {
-        vector<int> nums;
-        ListNode* temp = head;
-        while(temp){
-            nums.push_back(temp->val);
-            temp = temp->next;
+        stack<int> st;
+        ListNode* curr = head;
+        while(curr){
+            st.push(curr->val);
+            curr = curr->next;
         }
-        int i = 0;
-        int j = nums.size()-1;
-        int maxSum = 0;
-        while(i<j){
-            maxSum = max(maxSum,nums[j]+nums[i]);
-            i++;
-            j--;
+        int n = st.size();
+        int cnt = 1;
+        int res = 0;
+        curr = head;
+        while(cnt <= n/2){
+            res = max(res,curr->val + st.top());
+            curr = curr->next;
+            st.pop();
+            cnt++;
         }
-        return maxSum;
+        return res;
     }
 };
