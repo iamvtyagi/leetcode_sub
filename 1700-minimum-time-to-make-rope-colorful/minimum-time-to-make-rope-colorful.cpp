@@ -8,9 +8,7 @@ public:
         int j = 1;
         while(j<n && i<n){
             if(nums[i]-'0' == nums[j]-'0'){
-                // bool flag = false;
                 if(neededTime[i]>neededTime[j]){
-                    // flag = true;
                     cost += neededTime[j];
                     neededTime[j]= -1;
                     j++;
@@ -25,7 +23,7 @@ public:
                     i++;
                 }
                 j++;
-                if(i==j) j++;
+                // if(i==j) j++;
             }
         }
         return cost;
