@@ -1,21 +1,20 @@
 class Solution {
 public:
     int secondHighest(string s) {
-        int first = -1, second = -1;
+        set<int> st;
 
         for(char ch : s){
             if(ch >= '0' && ch <= '9'){
-                int d = ch - '0';
-
-                if(d > first){
-                    second = first;
-                    first = d;
-                }
-                else if(d < first && d > second){
-                    second = d;
-                }
+                st.insert(ch - '0');
             }
         }
-        return second;
+
+        if(st.size() < 2) return -1;
+
+        auto it = st.end();
+        it--;  
+        it--;     
+
+        return *it;
     }
 };
