@@ -1,18 +1,14 @@
 class Solution {
 public:
-    int reverse(int n) {
-        long long x = n;
-        long long rev = 0;
-        bool check = false;
-        if(x<0) check = true;
-        if(check) x = -1 * x;
-        while(x>0){
-            int digit = x%10;
-            rev = rev * 10 + digit;
-            x = x/10;
+    int reverse(int x) {
+        int n = x;
+        long long revNo = 0;
+        while(n){
+            int digit = n%10;
+            revNo = revNo *10 + digit;
+            n = n/10;
         }
-        if(rev > INT_MAX) return 0;
-        if(check) return -1 * rev;
-        return rev;
+        if(revNo > INT_MAX || revNo <INT_MIN) return 0;
+        return revNo;
     }
 };
