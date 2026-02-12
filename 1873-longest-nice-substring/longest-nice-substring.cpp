@@ -1,25 +1,25 @@
 class Solution {
 public:
-    bool check(string s){
-        for(int i = 0;i<s.size();i++){
-            char c = s[i];
-            if(c<=90) c+=32;
-            else c-=32;
-            if(s.find(c)==string::npos) return false;
-        }
-        return true;
-    }
     string longestNiceSubstring(string s) {
-        int n = s.size();
-        string ans = "";
-        for(int i = 0;i<n;i++){
-            string res = "";
-            res += s[i];
-            for(int j = i+1;j<n;j++){
-                res += s[j];
-                if(check(res) && res.size() > ans.size()) ans  = res;
+          if (s.length() < 2) return "";
+
+        unordered_set<char> st(s.begin(), s.end());
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s[i];
+
+            if (st.count(toupper(c)) && st.count(tolower(c))) {
+                continue;
             }
+
+            // Invalid character found → split
+            string left = longestNiceSubstring(s.substr(0, i));
+            string right = longestNiceSubstring(s.substr(i + 1));
+
+            return (left.length() >= right.length()) ? left : right;
         }
-        return ans;
+
+        // Entire string is nice
+        return s;        
     }
 };
