@@ -2,19 +2,16 @@ class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
         int n = nums.size();
-        int cnt = 0;
-        for(int i = 0;i<n;i++){
-            if(nums[i]==0) cnt++;
-        }
-        int idx = 0;
-        for(int i = 0;i<n;i++){
-            if(nums[i] != 0  ){
-                nums[idx++] = nums[i]; 
-                
+        int i = 0;
+        int j = 0;
+        while(j<n){
+            if(nums[j] != 0){
+                swap(nums[j],nums[i]);
+                i++;
+                j++;
+            }else{
+                j++;
             }
-        }
-        for(int i = 1;i<=cnt;i++){
-            nums[n-i] = 0;
         }
     }
 };
