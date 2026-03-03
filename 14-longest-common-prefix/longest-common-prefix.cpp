@@ -8,7 +8,6 @@ public:
              int b = strs[i].size();
              minLength = min(minLength , b);
         }
-        int cnt = 0;
         for(int i = 0;i<minLength;i++){
              
             for(int j = 0;j<n-1;j++){
@@ -16,7 +15,7 @@ public:
                     return ans;
                 }
             }
-            ans += strs[0][cnt++];
+            ans += strs[0][i];
         }
         return ans;
     }
