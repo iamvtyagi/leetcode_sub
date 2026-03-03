@@ -13,9 +13,6 @@ public:
       return st+"1"+s;
     }
     char findKthBit(int n, int k) {
-        unordered_map<int,string> mp;
-        mp[1]= "0";
-        mp[2]= "011";
         string st = getsn(n);
         cout<<st<<endl;
         return st[k-1];
