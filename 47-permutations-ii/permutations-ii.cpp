@@ -1,24 +1,38 @@
 class Solution {
 public:
-    void helper(vector<int>& nums,int idx ,set<vector<int>>& res){
+    void helper(vector<int>& nums,vector<vector<int>>& res, unordered_map<int,int>& mp,vector<int> temp){
 
-        if(idx == nums.size()){
-            res.insert(nums);
+        if(temp.size() == nums.size()){
+            res.push_back(temp);
             return;
         }
 
-        for(int i = idx ;i<nums.size();i++){
-            swap(nums[i],nums[idx]);
-            helper(nums,idx+1,res);
-            swap(nums[i],nums[idx]);
+        for(auto& [num,count] : mp){
+            if(count == 0) continue;
+
+            temp.push_back(num);
+            mp[num]--;
+
+            helper(nums,res,mp,temp);
+            temp.pop_back();
+            mp[num]++;
         }
     }
     vector<vector<int>> permuteUnique(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
-        set<vector<int>> res;
-        vector<int> curr;
-        helper(nums,0,res);
-        vector<vector<int>> ans(res.begin(),res.end());
-        return ans;        
+        int n = nums.size();
+        vector<vector<int>> res;
+        vector<int> temp;
+        unordered_map<int,int> mp;
+        
+        for(int i = 0;i<nums.size();i++){
+            mp[nums[i]]++;
+        }
+
+        // for(auto& [num,count] : mp){
+        //     cout<<num<<"  "<<count<<endl; 
+        // }
+
+        helper(nums,res,mp,temp);
+        return res;
     }
 };
