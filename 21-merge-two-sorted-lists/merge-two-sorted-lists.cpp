@@ -1,16 +1,24 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        if(list1 == NULL) return list2;
-        if(list2 == NULL) return list1;
+        // Create a dummy node to act as the starting point
+        ListNode* dummy = new ListNode(NULL);
+        ListNode* tail = dummy;
 
-        if(list1->val < list2->val){
-            list1->next = mergeTwoLists(list1->next,list2);
-            return list1;
-        }else{
-            list2->next = mergeTwoLists(list1,list2->next);
-            return list2;
+        while (list1 && list2) {
+            if (list1->val < list2->val) {
+                tail->next = list1;
+                list1 = list1->next;
+            } else {
+                tail->next = list2;
+                list2 = list2->next;
+            }
+            tail = tail->next;
         }
-        return nullptr;
+
+        // Attach the remaining nodes of the non-empty list
+        tail->next = list1 ? list1 : list2;
+
+        return dummy->next;
     }
 };
