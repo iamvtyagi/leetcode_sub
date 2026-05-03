@@ -2,22 +2,25 @@ class Solution {
 public:
     bool isValid(string s) {
         int n = s.size();
-        string s1 = "([{";
-        stack<char> st;
-        for(int i = 0; i < n; i++){
-            if(s1.find(s[i]) != string::npos){  // check opening
+        
+        stack<int> st;
+
+        for(int i = 0;i<n;i++){
+            if(s[i] == '(' || s[i] == '{' || s[i] == '['){
                 st.push(s[i]);
-            } else {
+            }else{
+
                 if(st.empty()) return false;
-                char top = st.top();
-                st.pop();
-                if((s[i] == ')' && top != '(') ||
-                   (s[i] == ']' && top != '[') ||
-                   (s[i] == '}' && top != '{')){
+
+                char ch = st.top();
+                if((ch == '(' && s[i]==')') || (ch=='[' && s[i]==']') || (ch=='{' && s[i]=='}')){
+                    st.pop();
+                } else{
                     return false;
                 }
             }
         }
-        return st.empty();
+
+        return (st.empty()?true:false);
     }
 };
